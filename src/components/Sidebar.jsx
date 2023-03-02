@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Navbar from "./Navbar";
 import Hinh01 from "../assets/images/hinh01re.PNG"
 import Hinh02 from "../assets/images/hinh02re.PNG"
 import Hinh03 from "../assets/images/hinh03re.PNG"
@@ -27,6 +27,7 @@ import {
   Badge,
   Card,
   CardMedia,
+  Table,TableHead,TableRow,TableCell,TableBody,Pagination,
   
   
 
@@ -51,7 +52,7 @@ import {
   AccessibilityOutlined,
   RemoveRedEyeOutlined,
   NotificationsNone,
-  BorderColor,
+  BorderColor,CalendarMonth,Download,
 
 } from "@mui/icons-material";
 import { Stack } from '@mui/system';
@@ -89,20 +90,20 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const columns = [
-  { field: 'phuong', headerName: 'Phường', width: 130 },
-  { field: 'khu_vuc', headerName: 'Khu vực', width: 130 },
-  { field: 'nguy_co', headerName: 'Nguy cơ', width: 130 },
-  { field: 'ca_benh', headerName: 'Ca bệnh', width: 130 },
-  { field: 'theo_doi', headerName: 'Đang theo dõi', width: 150 },
-  { field: 'tu_vong', headerName: 'Tử vong', width: 130 },
-];
+function createData(phuong, khuVuc, nguyCo, caBenh, dangTheoDoi,tuVong) {
+  return { phuong, khuVuc, nguyCo, caBenh, dangTheoDoi,tuVong };
+}
 
 const rows = [
-  { id: 1, phuong: 'Phường 1', khu_vuc: 'KV1', nguy_co: 'Cao', ca_benh: 10, theo_doi: 20, tu_vong: 2 },
-  { id: 2, phuong: 'Phường 2', khu_vuc: 'KV2', nguy_co: 'Trung bình', ca_benh: 5, theo_doi: 10, tu_vong: 1 },
-  { id: 3, phuong: 'Phường 3', khu_vuc: 'KV3', nguy_co: 'Thấp', ca_benh: 2, theo_doi: 4, tu_vong: 0 },
+  createData('Thắng Nhất', 'Khu nhà PTSC', 'Không nguy cơ', 2, 0, 0),
+  createData(1, 'Kênh đồng sắt 3', 'Nguy cơ cao', 200, 0,25),
+  createData('Chí Linh', 'Chí Linh', 'Nguy cơ thấp', 10, 0 ,0),
+  createData('Rạch Dừa', 'Rạch Dừa', 'Nguy cơ vừa', 65, 0 ,0),
+  
 ];
+
+
+
 
 export default function BasicGrid() {
 
@@ -546,6 +547,115 @@ export default function BasicGrid() {
           
         </Box>
 
+        <Box
+        sx={{
+          width: 1600,
+          height: 80,
+          bgcolor: 'white',
+          borderRadius:4,
+          mt:5, 
+        }}>
+          <Box direction="row" sx={{ height: 60, width: 1600, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Typography variant='h6'>
+              Loại số liệu
+              
+            </Typography>
+            <Box sx={{width:120,height:40,backgroundColor:'#F2F2F2',borderRadius:2,justifyContent:'center',ml:2}}>
+              <Box direction="row" sx={{display:'flex',textAlign:'center',justifyContent:'center'}}>
+
+              <Typography sx={{pl:1.25,pb:0.5,pt:1,color:'#595AD3'}}> Đầu vào
+              
+              </Typography>
+              <ExpandMore sx={{pt:1,pl:2}}/>
+              </Box>
+            </Box>
+
+            <Box direction="row" sx={{display:'flex',textAlign:'center',justifyContent:'center'}}>
+
+            <Typography variant='h6' sx={{marginLeft:5}}>
+              Phường
+              
+            </Typography>
+            <Box sx={{width:200,height:40,backgroundColor:'#F2F2F2',borderRadius:2,justifyContent:'center',ml:2}}>
+            <Box direction="row" sx={{display:'flex',textAlign:'center',justifyContent:'center'}}>
+
+              <Typography sx={{pb:2,pt:1,color:'#595AD3'}}> Thắng nhất +3 khác
+              </Typography>
+              <ExpandMore sx={{pt:1,pl:2}}/>
+              </Box>
+            </Box>
+            </Box>
+            <Typography variant='h6' sx={{marginLeft:5}}>
+              Ngày xem
+              
+            </Typography>
+            <Box sx={{width:140,height:40,backgroundColor:'#F2F2F2',borderRadius:2,justifyContent:'center',ml:2}}>
+            <Box direction="row" sx={{display:'flex',textAlign:'center',justifyContent:'center'}}>
+
+              <Typography sx={{pl:1.25,pt:1,pb:0.5,color:'#595AD3'}}> 10/02/2023
+              </Typography>
+              <CalendarMonth sx={{pt:1,pl:2}}/>
+              </Box>
+            </Box>
+            <Button variant="contained"sx={{marginLeft:5,marginRight:3,borderRadius:2,width:155,backgroundColor:'#595AD3'}} startIcon={<Download/>}>
+              Excel
+            </Button>
+          </Box>
+
+          {/* fawfwa */}
+          <Table sx={{ minWidth: 650,marginLeft:2 }} aria-label="simple table">
+        <TableHead>
+          <TableRow >
+          
+
+            <TableCell  sx={{fontWeight:'bold',fontSize:'16px'}}> Phường </TableCell>
+            <TableCell sx={{fontWeight:'bold',fontSize:'16px'}}>Khu vực</TableCell>
+            <TableCell sx={{fontWeight:'bold',fontSize:'16px'}}>Nguy cơ</TableCell>
+            <TableCell sx={{fontWeight:'bold',fontSize:'16px'}}>Ca bệnh</TableCell>
+            <TableCell sx={{fontWeight:'bold',fontSize:'16px'}}>Đang theo dõi</TableCell>
+            <TableCell sx={{fontWeight:'bold',fontSize:'16px'}}>Tử vong</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row,index) => (
+            <TableRow
+              key={row.phuong}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                  {row.phuong}
+                
+              </TableCell>
+              <TableCell >{row.khuVuc}</TableCell>
+              <TableCell  >
+              {index % 4 === 0 && <Box style={{width:160,backgroundColor: '#C9C9C9',borderRadius:10,textAlign:'center',color:'black' }}>{row.nguyCo}</Box>}
+              {index % 4 === 1 && <Box style={{ width:160,backgroundColor: '#FC3D39' ,color:'white',borderRadius:10,textAlign:'center'}}>{row.nguyCo}</Box>}
+              {index % 4 === 2 && <Box style={{ width:160,backgroundColor: '#3DC55D' ,color:'white',borderRadius:10,textAlign:'center'}}>{row.nguyCo}</Box>}
+              {index % 4 === 3 && <Box style={{ width:160,backgroundColor: '#FD9426' ,color:'white',borderRadius:10,textAlign:'center'}}>{row.nguyCo}</Box>}
+              
+              </TableCell>
+              <TableCell >{row.caBenh}</TableCell>
+              <TableCell >{row.dangTheoDoi}</TableCell>
+              <TableCell >{row.tuVong}</TableCell>
+            </TableRow>
+            
+          ))}
+
+          
+            
+        </TableBody>
+        
+        
+      </Table>
+      <Stack spacing={2} sx={{alignItems:'center',justifyContent:'center'}}>
+      <Pagination count={7} showFirstButton showLastButton />
+    </Stack>
+
+
+      
+
+        </Box>
         
 
 
